@@ -1,6 +1,7 @@
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
+import json from "@rollup/plugin-json";
 import { exec } from "child_process";
 import { homedir } from "os";
 import { promisify } from "util";
@@ -84,7 +85,8 @@ const config = {
 				wrap_iife: true,
 				beautify: (options.build === "development"),
 			}
-		})
+		}),
+		json()
 	]
 };
 export default config;

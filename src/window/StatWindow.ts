@@ -1,12 +1,15 @@
 import { Data } from "../data/data";
 import { PLUGIN_CONTEXT_KEY, PLUGIN_WINDOW_CLASSIFICATION } from "../const";
+import { Logic } from "../logic/logic";
+import { RideRequirement } from "../data/types";
+import { RideRequirements } from "./RideRequirements";
 
 export class StatWindow {
     
     private window: Window;
     constructor() {
         let data = this.getStatWindowOptions();
-        this.window = this.createWindow(data);
+        this.window = this.createWindow(data, false);
         
         this.setHooks(data);
     }
@@ -15,13 +18,12 @@ export class StatWindow {
         context.subscribe('action.execute', (e) => {
             switch (e.action) {
                 case 'ridecreate': 
-                    this.window = ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION);
-                    if (data.options.openWhenCreatingRide && !this.window) {
+                    if (data.options.openWhenCreatingRide && !ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION)) {
                         this.window = this.createWindow(data);
                     }
-                    if (data.options.autoChangeRideSelection && this.window) {
+                    if (data.options.autoChangeRideSelection && !ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION)) {
                         this.window = ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION);
-                        this.updateDropdown(this.window.findWidget("rideSelectWidgetIds"), 1);
+                        this.updateRideSelectDropdown(this.window.findWidget("rideSelectWidgetId"), 1);
                     }
                     break;
                 case 'ridedemolish':
@@ -29,17 +31,9 @@ export class StatWindow {
                         this.window?.close();
                     }
                     break;
-                case '': 
-                    console.log();
-                    break;
-                
-                default: 
-                    break;
-                
             }
         })
     }
-
     private createWindow(data?: Data, checkDuplicates = true): Window {
         if (checkDuplicates) {
             let windowExists = ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION);
@@ -59,7 +53,6 @@ export class StatWindow {
 
     private getWidgets(data?: Data): WidgetDesc[] {
         let widgets: WidgetDesc[] = [];
-
         widgets.push({
             type: "groupbox",
             x: 5,
@@ -81,16 +74,21 @@ export class StatWindow {
             height: 15,
             name: "rideSelectWidgetId",
             onChange: (i) => {
-                this.updateDropdown(widgets[rideSelectWidgetId] as DropdownWidget, i);
+                this.updateRideSelectDropdown(this.window.widgets[rideSelectWidgetId] as DropdownWidget, i)
             }
         });
+        let statRequirements = Logic.getRequirements(-1);
+        widgets = widgets.concat(RideRequirements.getWidgets(statRequirements));
+        //widgets.push(...getDescriptions(100,100, ));
+        
         return widgets;
     }
 
-    private updateDropdown(widget: DropdownWidget, index: number) {
-        console.log("Updating widget" + widget.name);
+    private updateRideSelectDropdown(widget: DropdownWidget, index: number) {
         if (widget) {
             widget.selectedIndex = index;
+            let requirements = Logic.getRequirements(map.rides[index].type);
+            RideRequirements.updateWidgets(this.window, requirements);
         }
     }
 
