@@ -11,8 +11,7 @@ export class StatWindow {
     constructor() {
         let data = OptionsWidget.data;
         this.createWindow(data, false);
-        
-        //this.setHooks(data);
+        this.setHooks(data);
     }
 
     private setHooks(data: Data) {
