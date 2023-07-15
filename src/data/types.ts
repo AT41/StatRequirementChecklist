@@ -8,7 +8,8 @@ export interface RideRequirement {
     max_lateral_g?: string,
     inversion?: string,
     reverser_track_piece?: string,
-    water_track_piece?: string
+    water_track_piece?: string,
+    ride_type?: string
 }
 
 /* eslint-disable camelcase */

@@ -7,9 +7,9 @@ export class RideRequirements {
     private static Y_START: number;
     private static readonly NAME = "Ride Stats Box";
 
-    public static getWidgets(statRequirements: RideRequirement | null): WidgetDesc[] {
+    public static getWidgets(xStart: number, yStart: number, statRequirements: RideRequirement | null): WidgetDesc[] {
         if (!this._widgets) {
-            return this.buildWidgets(50,100);
+            return this.buildWidgets(xStart, yStart);
         }
         return this._widgets??[];
     }
@@ -33,7 +33,7 @@ export class RideRequirements {
             let widget: Widget & {text: string} = window.findWidget(key);
             numberOfLines += !!statRequirements?.[keyAsReq] ? 1 : 0;
             widget.isVisible = !!statRequirements?.[keyAsReq];
-            widget.text = widget.text.replace(/: $/, ": " + (statRequirements?.[keyAsReq] ? statRequirements[keyAsReq] as string : ""));
+            widget.text = widget.text.replace(/: .*$/, ": " + (statRequirements?.[keyAsReq] ? statRequirements[keyAsReq] as string : ""));
             widget.y = this.Y_START + (numberOfLines) * (this.Y_INCREMENT_HEIGHT);
         });
         window.findWidget(this.NAME).height = 20 + (numberOfLines) * (this.Y_INCREMENT_HEIGHT);
@@ -66,7 +66,7 @@ export class RideRequirements {
             x: startX,
             y: startY,
             width: 200,
-            height: 200
+            height: 20
         });
         descriptionWidgets = descriptionWidgets.concat(Object.keys(rideReqs).filter(key => key !== "ride_type").map(
             (key => {

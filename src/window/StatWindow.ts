@@ -1,117 +1,161 @@
 import { Data } from "../data/data";
-import { PLUGIN_CONTEXT_KEY, PLUGIN_WINDOW_CLASSIFICATION } from "../const";
+import { PLUGIN_WINDOW_CLASSIFICATION } from "../const";
 import { Logic } from "../logic/logic";
-import { RideRequirement } from "../data/types";
 import { RideRequirements } from "./RideRequirements";
+import { OptionsWidget } from "./Options";
+import { getPluginWindow } from "../sharedService/sharedService";
 
 export class StatWindow {
-    
+    //@ts-ignore
     private window: Window;
     constructor() {
-        let data = this.getStatWindowOptions();
-        this.window = this.createWindow(data, false);
+        let data = OptionsWidget.data;
+        this.createWindow(data, false);
         
-        this.setHooks(data);
+        //this.setHooks(data);
     }
 
     private setHooks(data: Data) {
-        context.subscribe('action.execute', (e) => {
+        let actionHook = context.subscribe('action.execute', (e) => {
             switch (e.action) {
                 case 'ridecreate': 
-                    if (data.options.openWhenCreatingRide && !ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION)) {
-                        this.window = this.createWindow(data);
+                    let window = getPluginWindow();
+                    if (data.options.openWhenCreatingRide && !window) {
+                        this.createWindow(data);
                     }
-                    if (data.options.autoChangeRideSelection && !ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION)) {
-                        this.window = ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION);
-                        this.updateRideSelectDropdown(this.window.findWidget("rideSelectWidgetId"), 1);
+                    if (data.options.autoChangeRideSelection && !window) {
+                        this.updateRideSelectDropdown(1);
                     }
                     break;
                 case 'ridedemolish':
                     if (data.options.closeWhenDeletingRide) {
-                        this.window?.close();
+                        getPluginWindow()?.close();
                     }
                     break;
             }
-        })
+        });
+        
     }
-    private createWindow(data?: Data, checkDuplicates = true): Window {
+    private createWindow(data?: Data, checkDuplicates = true): void {
         if (checkDuplicates) {
-            let windowExists = ui.getWindow(PLUGIN_WINDOW_CLASSIFICATION);
+            let windowExists = getPluginWindow();
             if (windowExists) {
                 this.window = windowExists;
-                return windowExists;
+                return;
             }
         }
-        return ui.openWindow({
+        this.window = ui.openWindow({
             classification: "Stat Requirement Window",
-            width: 400,
+            width: 230,
             height: 300,
             title: "Ride Stat Requirements",
-            widgets: this.getWidgets(data)
+            tabs: [
+                {
+                    image: 'hide_vehicles',
+                    widgets: this.getWidgets(0, 25, data)
+                },
+                {
+                    image: 'search',
+                    widgets: OptionsWidget.createWidgets(15, 60)
+                },
+            ],
+            onTabChange: () => {
+                OptionsWidget.update();
+            }
         });
+        this.updateWidgets();
+        OptionsWidget.update();
     }
 
-    private getWidgets(data?: Data): WidgetDesc[] {
+    private getWidgets(xStart: number, yStart: number, data?: Data): WidgetDesc[] {
         let widgets: WidgetDesc[] = [];
         widgets.push({
             type: "groupbox",
-            x: 5,
-            y: 25,
-            width: 200,
-            height: 200,
+            x: xStart + 5,
+            y: yStart + 25,
+            width: 220,
+            height: 230,
             name: "ride_selection",
             text: "Ride Selection"
         });
-        let rideSelectWidgetId = widgets.push({
+        widgets.push({
             type: "dropdown",
-            items: map.rides.map(function (ride) {
-                return [ride.id, ride.name].join(" - ");
-            }),
+            items: [],
             selectedIndex: -1,
-            x: 15,
-            y: 40,
-            width: 180,
+            x: xStart + 15,
+            y: yStart + 40,
+            width: 200,
             height: 15,
             name: "rideSelectWidgetId",
             onChange: (i) => {
-                this.updateRideSelectDropdown(this.window.widgets[rideSelectWidgetId] as DropdownWidget, i)
+                this.updateRideSelectDropdown(i);
+            }
+        });
+        widgets.push({
+            type: "dropdown",
+            x: xStart + 15,
+            y: yStart + 60,
+            width: 200,
+            height: 15,
+            name: "researchRideSelectWidgetId",
+            onChange: (i) => {
+                this.updateResearchRideSelectDropdown(i);
             }
         });
         let statRequirements = Logic.getRequirements(-1);
-        widgets = widgets.concat(RideRequirements.getWidgets(statRequirements));
+        widgets = widgets.concat(RideRequirements.getWidgets(xStart + 15, yStart + 100, statRequirements));
         //widgets.push(...getDescriptions(100,100, ));
         
         return widgets;
     }
 
-    private updateRideSelectDropdown(widget: DropdownWidget, index: number) {
-        if (widget) {
-            widget.selectedIndex = index;
-            let requirements = Logic.getRequirements(map.rides[index].type);
-            RideRequirements.updateWidgets(this.window, requirements);
-        }
+    private updateWidgets() {
+        (this.window.findWidget("rideSelectWidgetId") as DropdownWidget).items = 
+            [
+                "---",
+                ...map.rides.filter(ride => ride.classification === "ride").map(function (ride) {
+                    return [ride.id, ride.name].join(" - ");
+                })
+            ];
+        (this.window.findWidget("researchRideSelectWidgetId") as DropdownWidget).items = 
+            [
+                "---",
+                ...park.research.inventedItems
+                    .filter(item => item.type === "ride")
+                    .map(item => {
+                        if (item.type === "ride") {
+                            let requirements = Logic.getRequirements(item.rideType);
+                            return requirements ? requirements.name : "";
+                        }
+                        else return "";
+                    })
+                    .filter(name => name != "")
+                    .sort()
+            ]
     }
 
-    private getStatWindowOptions(): Data {
-        let d: Data = {
-            selectedRideId: -1,
-            options: {
-                openWhenCreatingRide: true,
-                openWhenModifyingRide: true,
-                autoChangeRideSelection: true,
-                closeWhenDeletingRide: true
-            }
-        };
-        try {
-            d = {
-                ...d, 
-                ...context.sharedStorage?.get(PLUGIN_CONTEXT_KEY)
-            };//This way lets us keep old values while accomodating new values
+    private updateRideSelectDropdown(index: number) {
+        console.log("updating ride select");
+        let widget = this.window.findWidget("rideSelectWidgetId") as DropdownWidget;
+        let secondaryWidget = this.window.findWidget("researchRideSelectWidgetId") as DropdownWidget;
+        if (index !== 0) {
+            secondaryWidget.selectedIndex = 0;
+            let rideId = parseInt(widget.items[index].match(/^\d+/)?.[0]??"-1");
+            let requirements = Logic.getRequirements(map.getRide(rideId) ? map.getRide(rideId).type : -1);
+            RideRequirements.updateWidgets(this.window, requirements);
         }
-        catch (e) {
-            console.log(e);
-        }
+        widget.selectedIndex = index;
+    }
 
-        return d;
+    private updateResearchRideSelectDropdown(index: number) {
+        console.log("updating research select");
+        let widget = this.window.findWidget("researchRideSelectWidgetId") as DropdownWidget;
+        let secondaryWidget = this.window.findWidget("rideSelectWidgetId") as DropdownWidget;
+        if (index !== 0) {
+            secondaryWidget.selectedIndex = 0;
+            let requirements = Logic.getRequirementsFromName(widget.items[index]);
+            RideRequirements.updateWidgets(this.window, requirements);
+        }
+        widget.selectedIndex = index;
     }
 }

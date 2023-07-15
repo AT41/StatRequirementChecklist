@@ -1,15 +1,13 @@
+import { PLUGIN_WINDOW_CLASSIFICATION } from './const';
 import {StatWindow} from './window/StatWindow';
 
 function onClickMenuItem()
 {
-	for (let i = 0; i < 99; i++) {
-		if (ui.getWindow(i)) {
-			console.log(ui.getWindow(i).classification);
-		}
-	}
+	ui.closeWindows(PLUGIN_WINDOW_CLASSIFICATION);
 	new StatWindow();
 	//On ridecreate, ridedemolish open window, refresh global rides
 	//Use context.sharedStorage for plugin options
+	//TODO Must check if ui available before using ui interface
 }
 
 export function startup()

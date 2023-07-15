@@ -1,9 +1,8 @@
 export interface Data {
-    selectedRideId: number;
     options: Options;
 }
 
-interface Options {
+export interface Options {
     openWhenCreatingRide: boolean;
     closeWhenDeletingRide: boolean;
     openWhenModifyingRide: boolean;
