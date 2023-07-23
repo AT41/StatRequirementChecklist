@@ -10,8 +10,59 @@ export interface RideRequirement {
     reverser_track_piece?: string,
     water_track_piece?: string,
     ride_type?: string
+    optional_inversion?: boolean
 }
 
+export interface Data {
+    options: Options;
+}
+
+export interface Options {
+    openWhenCreatingRide: boolean;
+    closeWhenDeletingRide: boolean;
+    openWhenModifyingRide: boolean;
+    autoChangeRideSelection: boolean;
+    autoUpdateChecklistSelection: boolean;
+}
+
+export const RIDE_REQUIREMENT_OBJ = {
+    name: "",
+    highest_drop_height: "",
+    number_of_drops: "",
+    max_speed: "",
+    ride_length: "",
+    max_negative_g: "",
+    max_lateral_g: "",
+    inversion: "",
+    reverser_track_piece: "",
+    water_track_piece: ""
+};
+
+export const RideRequirementLabelMap: {[key in keyof RideRequirement]: string} = {
+    name: "Ride Name: ",
+    highest_drop_height: "Highest Drop Height: ",
+    number_of_drops: "Number of Drops: ",
+    max_lateral_g: "Max Lateral Gs: ",
+    max_negative_g: "Max Negative Gs: ",
+    inversion: "Inversions: ",
+    max_speed: "Max Speed: ",
+    ride_length: "Ride Length: ",
+    reverser_track_piece: "Reverser Track Piece: ",
+    water_track_piece: "Water Track Piece: "
+}
+
+export enum FormatStringType {
+    LENGTH = "{LENGTH}",
+    HEIGHT = "{HEIGHT}",
+    VELOCITY = "{VELOCITY}"
+}
+
+export const RideRequirementValueFormatMap: {[key in keyof RideRequirement]: FormatStringType | undefined} = {
+    name: undefined,
+    highest_drop_height: FormatStringType.HEIGHT,
+    max_speed: FormatStringType.VELOCITY,
+    ride_length: FormatStringType.LENGTH
+}
 /* eslint-disable camelcase */
 // eslint-disable-next-line import/prefer-default-export
 // from https://github.com/ltsSmitty/OpenRCT-Ride-Painter/blob/main/src/helpers/RideType.ts
@@ -91,7 +142,7 @@ export enum RideType {
     "Crooked House",
     "Monorail Cycles",
     "Compact Inverted Coaster",
-    "Water Coaster",
+    "Water Roller Coaster",
     "Air Powered Vertical Coaster",
     "Inverted Hairpin Coaster",
     "Magic Carpet",

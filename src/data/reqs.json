@@ -50,7 +50,8 @@
     "highest_drop_height": "9*",
     "max_speed": "36",
     "max_negative_g": "0.30*",
-    "ride_type":"73"
+    "ride_type":"73",
+    "optional_inversion": true
   },
   "Corkscrew Roller Coaster": {
     "name": "Corkscrew Roller Coaster",
@@ -58,7 +59,8 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
-    "ride_type":"19"
+    "ride_type":"19",
+    "optional_inversion": true
   },
   "Dinghy Slide": {
     "name": "Dinghy Slide",
@@ -73,7 +75,8 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
-    "ride_type":"51"
+    "ride_type":"51",
+    "optional_inversion": true
   },
   "Flying Roller Coaster": {
     "name": "Flying Roller Coaster",
@@ -81,7 +84,8 @@
     "max_speed": "36",
     "max_negative_g": "0.40*",
     "inversion":"1",
-    "ride_type":"57"
+    "ride_type":"57",
+    "optional_inversion": true
   },
   "Tunnel Of Horror": {
     "name": "Tunnel Of Horror",
@@ -94,7 +98,8 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
-    "ride_type":"68"
+    "ride_type":"68",
+    "optional_inversion": true
   },
   "Heartline Twister Coaster": {
     "name": "Heartline Twister Coaster",
@@ -108,7 +113,8 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
-    "ride_type":"96"
+    "ride_type":"96",
+    "optional_inversion": true
   },
   "Hypercoaster": {
     "name": "Hypercoaster",
@@ -116,22 +122,25 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
-    "ride_type":"91"
+    "ride_type":"91",
+    "optional_inversion": true
   },
-  "Hyper": {
+  "Hypertwister": {
     "name": "Hyper-Twister",
     "highest_drop_height": "9*",
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
-    "ride_type":"92"
+    "ride_type":"92",
+    "optional_inversion": true
   },
   "Inverted Roller Coaster": {
     "name": "Inverted Roller Coaster",
     "highest_drop_height": "9*",
     "max_speed": "36",
     "max_negative_g": "0.30*",
-    "ride_type":"3"
+    "ride_type":"3",
+    "optional_inversion": true
   },
   "Inverted Hairpin Coaster": {
     "name": "Inverted Hairpin Coaster",
@@ -156,13 +165,14 @@
     "max_speed": "25",
     "ride_type":"4"
   },
-  "Lay": {
+  "Lay Down Roller Coaster": {
     "name": "Lay-down Roller Coaster",
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.40*",
     "inversion":"1",
-    "ride_type":"62"
+    "ride_type":"62",
+    "optional_inversion": true
   },
   "LIM Launched Roller Coaster": {
     "name": "LIM Launched Roller Coaster",
@@ -170,7 +180,8 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.10*",
-    "ride_type":"90"
+    "ride_type":"90",
+    "optional_inversion": true
   },
   "Log Flume": {
     "name": "Log Flume",
@@ -183,7 +194,8 @@
     "number_of_drops": "2*",
     "max_speed": "36",
     "max_negative_g": "0.10*",
-    "ride_type":"15"
+    "ride_type":"15",
+    "optional_inversion": true
   },
   "Mine Ride": {
     "name":"Mine Ride",
@@ -235,13 +247,14 @@
     "ride_length":"140",
     "ride_type":"72"
   },
-  "Multi":{
+  "Multidimensional Roller Coaster":{
     "name":"Multi-Dimension Roller Coaster",
     "number_of_drops":"2*",
     "max_speed":"36",
     "max_negative_g":"0.40*",
     "inversion":"1",
-    "ride_type":"55"
+    "ride_type":"55",
+    "optional_inversion": true
   },
   "Reverse Freefall Coaster":{
     "name":"Reverse Freefall Coaster",
@@ -261,7 +274,7 @@
     "ride_length":"200",
     "ride_type":"24"
   },
-  "Side":{
+  "Side Friction Roller Coaster":{
     "name":"Side-Friction Roller Coaster",
     "highest_drop_height":"4",
     "number_of_drops":"2",
@@ -275,7 +288,8 @@
     "number_of_drops":"2*",
     "max_speed":"36",
     "max_negative_g":"0.40*",
-    "ride_type":"97"
+    "ride_type":"97",
+    "optional_inversion": true
   },
   "Spinning Wild Mouse":{
     "name":"Spinning Wild Mouse",
@@ -292,7 +306,8 @@
     "number_of_drops":"2*",
     "max_speed":"36",
     "max_negative_g":"0.40*",
-    "ride_type":"0"
+    "ride_type":"0",
+    "optional_inversion": true
   },
   "Ski Lift":{
     "name":"Ski Lift",
@@ -304,7 +319,7 @@
     "highest_drop_height":"4",
     "ride_type":"60"
   },
-  "Stand":{
+  "Stand Up Roller Coaster":{
     "name":"Stand-up Roller Coaster",
     "highest_drop_height":"9",
     "max_speed":"36",
@@ -345,7 +360,8 @@
     "number_of_drops":"2*",
     "max_speed":"36",
     "max_negative_g":"0.40*",
-    "ride_type":"51"
+    "ride_type":"51",
+    "optional_inversion": true
   },
   "Vertical Drop Roller Coaster":{
     "name":"Vertical Drop Roller Coaster",
