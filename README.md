@@ -17,7 +17,7 @@ Typescript boilerplate taken from <a href="https://github.com/Basssiiie/OpenRCT2
 
 ## Installation
 
-Download the latest <a href="">release file</a> from Github. Grab StatRequirementChecklist.js and move it into your OpenRCT2 plugin folder.
+Download the latest <a href="https://github.com/AT41/StatRequirementChecklist/releases">release file</a> from Github. Grab StatRequirementChecklist.js and move it into your OpenRCT2 plugin folder.
 
 ## Plugin Options
 
