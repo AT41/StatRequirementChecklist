@@ -6,7 +6,8 @@
 	"scripts": {
 		"start": "nodemon --watch ./src --ext js,ts --exec \"npm run build:dev\"",
 		"build": "rollup --config rollup.config.js --environment BUILD:production",
-		"build:dev": "rollup --config rollup.config.js"
+		"build:dev": "rollup --config rollup.config.js",
+		"prettify": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json}\""
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "^6.0.0",
@@ -14,6 +15,7 @@
 		"@rollup/plugin-terser": "^0.4.0",
 		"@rollup/plugin-typescript": "^11.0.0",
 		"nodemon": "^2.0.22",
+		"prettier": "^3.0.0",
 		"rollup": "^3.15.0",
 		"tslib": "^2.5.0"
 	}
