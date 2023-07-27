@@ -18,26 +18,27 @@ export interface Data {
 }
 
 export interface Options {
-    openWhenCreatingRide: boolean;
+    openWhenCreatingEditingRide: boolean;
     closeWhenDeletingRide: boolean;
-    openWhenModifyingRide: boolean;
     autoChangeRideSelection: boolean;
     autoUpdateChecklistSelection: boolean;
     openOnPrebuildSelect: boolean;
 }
 
-export const RIDE_REQUIREMENT_OBJ = {
-    name: '',
-    highest_drop_height: '',
-    number_of_drops: '',
-    max_speed: '',
-    ride_length: '',
-    max_negative_g: '',
-    max_lateral_g: '',
-    inversion: '',
-    reverser_track_piece: '',
-    water_track_piece: '',
-};
+export const RIDE_REQUIREMENT_OBJ: { [key in keyof RideRequirement]: string } =
+    {
+        name: '',
+        highest_drop_height: '',
+        number_of_drops: '',
+        max_speed: '',
+        ride_length: '',
+        max_negative_g: '',
+        max_lateral_g: '',
+        inversion: '',
+        reverser_track_piece: '',
+        water_track_piece: '',
+        optional_inversion: '',
+    };
 
 export const RideRequirementLabelMap: {
     [key in keyof RideRequirement]: string;
@@ -52,6 +53,7 @@ export const RideRequirementLabelMap: {
     ride_length: 'Ride Length: ',
     reverser_track_piece: 'Reverser Track Piece: ',
     water_track_piece: 'Water Track Piece: ',
+    optional_inversion: '*: Not required if inversion present',
 };
 
 export enum FormatStringType {

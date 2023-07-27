@@ -90,14 +90,17 @@ export class StatWindow {
                             ((e.args as RideCreateArgs | TrackPlaceArgs)
                                 .flags ?? 0 & this.TRACK_DESIGN_FLAG) > 0;
                         const isRidePreview =
-                            (e.args as TrackPlaceArgs).isFromTrackDesign ??
-                            false;
+                            (e.args as TrackPlaceArgs).isFromTrackDesign ===
+                            true;
+                        const isHoveringOverPrebuild =
+                            isRidePreview ||
+                            (isTrackDesign &&
+                                createOrTrackPlace === 'ridecreate');
+                        // When hovering over prebuild, ridecreate is called as well
+
                         if (
-                            isTrackDesign &&
-                            ((isRidePreview &&
-                                !data.options.openOnPrebuildSelect) ||
-                                (!isRidePreview &&
-                                    !data.options.openWhenModifyingRide))
+                            !data.options.openOnPrebuildSelect &&
+                            isHoveringOverPrebuild
                         ) {
                             return;
                         }
@@ -114,21 +117,18 @@ export class StatWindow {
                         const currentRideType =
                             RideSelectWidgets.getCurrentRideType();
                         if (
-                            ((createOrTrackPlace === 'ridecreate' &&
-                                data.options.openWhenCreatingRide &&
-                                !isTrackDesign) ||
-                                (createOrTrackPlace === 'trackplace' &&
-                                    data.options.openWhenModifyingRide)) &&
+                            (data.options.openWhenCreatingEditingRide ||
+                                (data.options.openOnPrebuildSelect &&
+                                    isHoveringOverPrebuild)) &&
                             (rideId !== currentRideId ||
                                 rideType !== currentRideType) &&
                             !getPluginWindow()
                         ) {
                             this.createWindow();
-                            console.log(createOrTrackPlace);
                         }
                         RideSelectWidgets.updateDropdownWidgetItems();
                         if (
-                            this.window &&
+                            getPluginWindow() &&
                             data.options.autoChangeRideSelection &&
                             (rideId !== currentRideId ||
                                 rideType !== currentRideType)

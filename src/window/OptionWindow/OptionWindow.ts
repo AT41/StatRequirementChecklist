@@ -27,15 +27,10 @@ export class OptionWindow {
         let data: {
             [key in keyof Options]: { label: string; tooltip: string };
         } = {
-            openWhenCreatingRide: {
+            openWhenCreatingEditingRide: {
                 label: 'Open When Creating or Editing Ride',
                 tooltip:
                     'Automatically open this window when creating/editing a ride',
-            },
-            openWhenModifyingRide: {
-                label: 'Open When Modifying Ride',
-                tooltip:
-                    'Automatically open this window when a ride is modified',
             },
             openOnPrebuildSelect: {
                 label: 'Open When Selecting Ride Preview',
@@ -114,8 +109,7 @@ export class OptionWindow {
     public static loadData(): void {
         let d: Data = {
             options: {
-                openWhenCreatingRide: true,
-                openWhenModifyingRide: true,
+                openWhenCreatingEditingRide: true,
                 autoChangeRideSelection: true,
                 closeWhenDeletingRide: true,
                 autoUpdateChecklistSelection: true,

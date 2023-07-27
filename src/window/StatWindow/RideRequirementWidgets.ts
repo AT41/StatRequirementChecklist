@@ -25,34 +25,25 @@ export class RideRequirementWidgets {
         window: Window,
         statRequirements: RideRequirement | null,
     ): number {
-        let rideReqs: RideRequirement = {
-            name: '',
-            highest_drop_height: '',
-            number_of_drops: '',
-            max_speed: '',
-            ride_length: '',
-            max_negative_g: '',
-            max_lateral_g: '',
-            inversion: '',
-            reverser_track_piece: '',
-            water_track_piece: '',
-        };
         let numberOfLines = 0;
-        Object.keys(rideReqs).forEach((key) => {
+        Object.keys(RIDE_REQUIREMENT_OBJ).forEach((key) => {
             let keyAsReq = key as keyof RideRequirement;
             let widget: Widget & { text: string } = window.findWidget(key);
             numberOfLines += !!statRequirements?.[keyAsReq] ? 1 : 0;
             widget.isVisible = !!statRequirements?.[keyAsReq];
-            widget.text = widget.text.replace(
-                /: .*$/,
-                ': ' +
-                    Logic.formatString(
-                        statRequirements?.[keyAsReq]
-                            ? (statRequirements[keyAsReq] as string)
-                            : '',
-                        RideRequirementValueFormatMap[keyAsReq],
-                    ),
-            );
+
+            if ((key as keyof RideRequirement) !== 'optional_inversion') {
+                widget.text = widget.text.replace(
+                    /: .*$/,
+                    ': ' +
+                        Logic.formatString(
+                            statRequirements?.[keyAsReq]
+                                ? (statRequirements[keyAsReq] as string)
+                                : '',
+                            RideRequirementValueFormatMap[keyAsReq],
+                        ),
+                );
+            }
             widget.y = this.Y_START + numberOfLines * this.Y_INCREMENT_HEIGHT;
         });
         let groupbox = window.findWidget(this.NAME);
@@ -98,6 +89,7 @@ export class RideRequirementWidgets {
                         case 'ride_length':
                         case 'reverser_track_piece':
                         case 'water_track_piece':
+                        case 'optional_inversion':
                             return {
                                 type: 'label',
                                 x: startX + 10,
@@ -109,7 +101,6 @@ export class RideRequirementWidgets {
                                 text: RideRequirementLabelMap[keyRideReq],
                             };
                         case 'ride_type':
-                        case 'optional_inversion':
                             return {
                                 type: 'label',
                                 x: 0,
