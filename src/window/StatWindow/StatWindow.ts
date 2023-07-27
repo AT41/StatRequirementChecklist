@@ -95,13 +95,14 @@ export class StatWindow {
                     let rideType: number = (e.args as TrackPlaceArgs | RideCreateArgs).rideType;
                     const currentRideId = RideSelectWidgets.getCurrentRideId();
                     const currentRideType = RideSelectWidgets.getCurrentRideType();
-                    if ((createOrTrackPlace === "ridecreate" && data.options.openWhenCreatingRide || createOrTrackPlace === "trackplace" && data.options.openWhenModifyingRide) 
+                    if (((createOrTrackPlace === "ridecreate" && data.options.openWhenCreatingRide && !isTrackDesign) || createOrTrackPlace === "trackplace" && data.options.openWhenModifyingRide) 
                         && (rideId !== currentRideId || rideType !== currentRideType)
                         && !getPluginWindow()) {
                         this.createWindow();
+                        console.log(createOrTrackPlace);
                     }
                     RideSelectWidgets.updateDropdownWidgetItems();
-                    if (data.options.autoChangeRideSelection && (rideId !== currentRideId || rideType !== currentRideType)) {
+                    if (this.window && data.options.autoChangeRideSelection && (rideId !== currentRideId || rideType !== currentRideType)) {
                         const rideSelectWidget = (this.window.findWidget("rideSelectWidgetId") as DropdownWidget);
                         if (!rideSelectWidget)
                             break;

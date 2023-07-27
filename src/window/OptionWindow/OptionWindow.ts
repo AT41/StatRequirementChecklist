@@ -29,25 +29,25 @@ export class OptionWindow {
                 label: "Open When Creating or Editing Ride",
                 tooltip: "Automatically open this window when creating/editing a ride"
             },
-            closeWhenDeletingRide: {
-                label: "Close When Deleting Ride",
-                tooltip: "Automatically close this window when deleting a ride"
-            },
             openWhenModifyingRide: {
                 label: "Open When Modifying Ride",
                 tooltip: "Automatically open this window when a ride is modified"
             },
+            openOnPrebuildSelect: {
+                label: "Open When Selecting Ride Preview",
+                tooltip: "Automatically open this window when choosing prebuilt rides"
+            },
             autoChangeRideSelection: {
                 label: "Change Ride Automatically",
-                tooltip: "Automatically changes what ride to search when creating, constructing, or testing a ride"
+                tooltip: "Automatically changes what ride to search when creating or constructing a ride"
+            },
+            closeWhenDeletingRide: {
+                label: "Close When Deleting Ride",
+                tooltip: "Automatically close this window when deleting a ride"
             },
             autoUpdateChecklistSelection: {
                 label: "Show Requirement Checklist",
                 tooltip: "Updates the current checklist when a ride is getting tested"
-            },
-            openOnPrebuildSelect: {
-                label: "Open When Selecting Ride Preview",
-                tooltip: "Automatically open this window when choosing prebuilt rides"
             }
         };
 
@@ -80,7 +80,7 @@ export class OptionWindow {
 
             if (keyOfOptionReq === "autoUpdateChecklistSelection" && !this.ALLOW_CHECKLIST) {
                 widget.isDisabled = true;
-                widget.tooltip += " - Cannot set with current OpenRCT2 version, please download latest for this feature (Current: " + context.apiVersion + ", Required: 79)"
+                widget.tooltip += " - Cannot set with current OpenRCT2 version, will be added once OpenRCT2 API is updated. (Current: " + context.apiVersion + ", Planned: 79)"
             }
             yInc += 20;
             return widget;
