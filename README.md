@@ -1,13 +1,13 @@
 # Ride Stat Requirements
 
-![Plugin Window](examples/pluginWindow.png)
+![Plugin Window](.github/pluginWindow.png)
 
 A small popup displaying what stats are required for each ride.
 No more manual searching for your current ride!
 
 Inspired by <a href="https://openrct2plugins.org/plugin/R_kgDOIMaptw/OpenRCT2.RideRequirements">jacknull1991's Ride Requirement Plugin</a>, with a few upgrades.
 
-![Example](examples/demo.gif)
+![Example](.github/demo.gif)
 
 ## Acknowledgements
 
