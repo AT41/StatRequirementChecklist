@@ -1,6 +1,6 @@
 # Ride Stat Requirements
 
-![Plugin Window](/examples/rideWindow.png)
+![Plugin Window](/examples/pluginWindow.png)
 
 A small popup displaying what stats are required for each ride.
 No more manual searching for your current ride!
