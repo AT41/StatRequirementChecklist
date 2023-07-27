@@ -44,6 +44,10 @@ export class OptionWindow {
             autoUpdateChecklistSelection: {
                 label: "Show Requirement Checklist",
                 tooltip: "Updates the current checklist when a ride is getting tested"
+            },
+            openOnPrebuildSelect: {
+                label: "Open When Selecting Ride Preview",
+                tooltip: "Automatically open this window when choosing prebuilt rides"
             }
         };
 
@@ -96,7 +100,8 @@ export class OptionWindow {
                 openWhenModifyingRide: true,
                 autoChangeRideSelection: true,
                 closeWhenDeletingRide: true,
-                autoUpdateChecklistSelection: true
+                autoUpdateChecklistSelection: true,
+                openOnPrebuildSelect: true
             }
         };
         try {

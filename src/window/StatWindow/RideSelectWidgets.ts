@@ -6,7 +6,8 @@ import { RideRequirementWidgets } from "./RideRequirementWidgets";
 interface RideSelectionState {
     rideSelectWidgetIndex: number,
     researchRideSelectWidgetIndex: number,
-    currentSelectedRideId: number
+    currentSelectedRideId: number, //Custom ID of ride, Eg. My Coaster 1
+    currentSelectedRideType: number //Ride Type's ID, Eg. Wooden Roller Coaster
 }
 export class RideSelectWidgets {
     private static readonly WIDTH = 220;
@@ -19,11 +20,16 @@ export class RideSelectWidgets {
     private static _windowState: RideSelectionState = {
         rideSelectWidgetIndex: 0,
         researchRideSelectWidgetIndex: 0,
-        currentSelectedRideId: -1
+        currentSelectedRideId: -1,
+        currentSelectedRideType: -1
     }
-    
-    public static get windowState(): RideSelectionState {
-        return this._windowState;
+
+    public static getCurrentRideId(): number {
+        return this._windowState.currentSelectedRideId;
+    }
+
+    public static getCurrentRideType(): number {
+        return this._windowState.currentSelectedRideType;
     }
 
     public static createWidgets(xStart: number, yStart: number): WidgetDesc[] {
@@ -64,44 +70,50 @@ export class RideSelectWidgets {
         let window = getPluginWindow();
         if (!window) 
             return;
-
-        (window.findWidget("rideSelectWidgetId") as DropdownWidget).items = 
-            [
-                "---",
-                ...map.rides.filter(ride => ride.classification === "ride").map(function (ride) {
-                    return [ride.id, ride.name].join(" - ");
-                })
-            ];
-        (window.findWidget("researchRideSelectWidgetId") as DropdownWidget).items = 
-            [
-                "---",
-                ...park.research.inventedItems
-                    .filter(item => item.type === "ride")
-                    .map(item => {
-                        if (item.type === "ride") {
-                            return Logic.typeToName(item.rideType);
-                        }
-                        else return "";
+        const rideSelectWidget = (window.findWidget("rideSelectWidgetId") as DropdownWidget);
+        const researchSelectWidget = (window.findWidget("researchRideSelectWidgetId") as DropdownWidget);
+        if (rideSelectWidget) {
+            rideSelectWidget.items = 
+                [
+                    "---",
+                    ...map.rides.filter(ride => ride.classification === "ride").map(function (ride) {
+                        return [ride.id, ride.name].join(" - ");
                     })
-                    .filter(name => name != "")
-                    .sort()
-            ];
+                ];
+        }
+
+        if (researchSelectWidget) {
+            researchSelectWidget.items = 
+                [
+                    "---",
+                    ...park.research.inventedItems
+                        .filter(item => item.type === "ride")
+                        .map(item => {
+                            if (item.type === "ride") {
+                                return Logic.typeToName(item.rideType);
+                            }
+                            else return "";
+                        })
+                        .filter(name => name != "")
+                        .sort()
+                ];
+        }
     }
 
-    public static getCurrentRideId(): number | undefined {
-        let window = getPluginWindow();
-        if (!window)
-            return;
-        const selectedItem = (window.findWidget("rideSelectWidgetId") as DropdownWidget).items[this.windowState.rideSelectWidgetIndex].match(/^\d+/)?.[0];
-        return selectedItem ? parseInt(selectedItem) : undefined;
+    public static resetState(): void {
+        this._windowState = {
+            rideSelectWidgetIndex: 0,
+            researchRideSelectWidgetIndex: 0,
+            currentSelectedRideId: -1,
+            currentSelectedRideType: -1
+        }
     }
 
     public static updateRideSelectDropdown(index: number): void {
         let window = getPluginWindow();
         if (!window) 
             return;
-        console.log("updating ride select");
-        this.windowState.currentSelectedRideId = -1;
+        this._windowState.currentSelectedRideId = -1;
         let widget = window.findWidget("rideSelectWidgetId") as DropdownWidget;
         if (!widget) 
             return;
@@ -110,15 +122,17 @@ export class RideSelectWidgets {
             secondaryWidget.selectedIndex = 0;
             this._windowState.researchRideSelectWidgetIndex = 0;
             const currentRideId = parseInt(widget.items[index].match(/^\d+/)?.[0]??"-1");
-            this.windowState.currentSelectedRideId = currentRideId;
-            let requirements = Logic.getRequirements(map.getRide(currentRideId) ? map.getRide(currentRideId).type : -1);
+            const currentRide = map.getRide(currentRideId);
+            this._windowState.currentSelectedRideId = currentRideId;
+            let requirements = Logic.getRequirements(currentRide ? currentRide.type : -1);
+            this._windowState.currentSelectedRideType = currentRide ? currentRide.type : -1;
             
             const newY = ChecklistWidgets.updateWidgets(undefined, undefined);
             RideRequirementWidgets.updateWidgets(window, requirements);
             RideRequirementWidgets.updateYStart(newY);
         }
         widget.selectedIndex = index;
-        this.windowState.rideSelectWidgetIndex = index;
+        this._windowState.rideSelectWidgetIndex = index;
     }
 
     public static updateResearchRideSelectDropdown(index: number): void {
@@ -133,6 +147,7 @@ export class RideSelectWidgets {
             this._windowState.rideSelectWidgetIndex = 0;
             secondaryWidget.selectedIndex = 0;
             let requirements = Logic.getRequirementsFromName(widget.items[index]);
+            this._windowState.currentSelectedRideType = requirements ? parseInt(requirements.ride_type??"-1") : -1;
             const newY = ChecklistWidgets.updateWidgets(undefined, undefined);
             RideRequirementWidgets.updateWidgets(window, requirements);
             RideRequirementWidgets.updateYStart(newY);
@@ -143,11 +158,11 @@ export class RideSelectWidgets {
     }
 
     public static reloadDropdownWidgetSelection(): void {
-        if (this.windowState.rideSelectWidgetIndex !== 0) {
-            this.updateRideSelectDropdown(this.windowState.rideSelectWidgetIndex);
+        if (this._windowState.rideSelectWidgetIndex !== 0) {
+            this.updateRideSelectDropdown(this._windowState.rideSelectWidgetIndex);
         }
         else {
-            this.updateResearchRideSelectDropdown(this.windowState.researchRideSelectWidgetIndex);
+            this.updateResearchRideSelectDropdown(this._windowState.researchRideSelectWidgetIndex);
         }
     }
 }

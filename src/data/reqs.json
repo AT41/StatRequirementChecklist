@@ -4,7 +4,7 @@
     "highest_drop_height": "25",
     "ride_type":"75"
   },
-  "Alpine Coaster": {
+  "Alpine Roller Coaster": {
     "name":"Alpine Coaster",
     "max_speed":"18",
     "ride_length":"370",
@@ -87,8 +87,8 @@
     "ride_type":"57",
     "optional_inversion": true
   },
-  "Tunnel Of Horror": {
-    "name": "Tunnel Of Horror",
+  "Ghost Train": {
+    "name": "Ghost Train",
     "ride_length": "180",
     "ride_type":"50"
   },
@@ -232,8 +232,8 @@
     "max_lateral_g":"1.30",
     "ride_type":"7"
   },
-  "Miniature Railroad":{
-    "name":"Miniature Railroad",
+  "Miniature Railway":{
+    "name":"Miniature Railway",
     "ride_length":"200",
     "ride_type":"5"
   },
@@ -247,7 +247,7 @@
     "ride_length":"140",
     "ride_type":"72"
   },
-  "Multidimensional Roller Coaster":{
+  "Multidimension Roller Coaster":{
     "name":"Multi-Dimension Roller Coaster",
     "number_of_drops":"2*",
     "max_speed":"36",
@@ -261,8 +261,8 @@
     "highest_drop_height":"25",
     "ride_type":"42"
   },
-  "Reverse Roller Coaster":{
-    "name":"Reverse Roller Coaster",
+  "Reverser Roller Coaster":{
+    "name":"Reverser Roller Coaster",
     "number_of_drops":"2",
     "ride_length":"200",
     "reverser_track_piece":"1",
@@ -282,8 +282,8 @@
     "ride_length":"250",
     "ride_type":"53"
   },
-  "Single Rail Coaster":{
-    "name":"Single Rail Coaster",
+  "Single Rail Roller Coaster":{
+    "name":"Single Rail Roller Coaster",
     "highest_drop_height":"10*",
     "number_of_drops":"2*",
     "max_speed":"36",
@@ -335,8 +335,8 @@
     "max_negative_g":"0.50",
     "ride_type":"10"
   },
-  "Supended Monorail":{
-    "name":"Supended Monorail",
+  "Suspended Monorail":{
+    "name":"Suspended Monorail",
     "ride_length":"170",
     "ride_type":"63"
   },

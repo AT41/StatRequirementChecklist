@@ -23,6 +23,7 @@ export interface Options {
     openWhenModifyingRide: boolean;
     autoChangeRideSelection: boolean;
     autoUpdateChecklistSelection: boolean;
+    openOnPrebuildSelect: boolean;
 }
 
 export const RIDE_REQUIREMENT_OBJ = {
@@ -53,13 +54,12 @@ export const RideRequirementLabelMap: {[key in keyof RideRequirement]: string} =
 
 export enum FormatStringType {
     LENGTH = "{LENGTH}",
-    HEIGHT = "{HEIGHT}",
     VELOCITY = "{VELOCITY}"
 }
 
 export const RideRequirementValueFormatMap: {[key in keyof RideRequirement]: FormatStringType | undefined} = {
     name: undefined,
-    highest_drop_height: FormatStringType.HEIGHT,
+    highest_drop_height: FormatStringType.LENGTH,
     max_speed: FormatStringType.VELOCITY,
     ride_length: FormatStringType.LENGTH
 }
@@ -75,7 +75,7 @@ export enum RideType {
     "Junior Roller Coaster",
     "Miniature Railway",
     "Monorail",
-    "Mini Suspended Roller Coaster",
+    "Mini Suspended Coaster",
     "Boat Hire",
     "Wooden Wild Mouse",
     "Steeplechase", // 10

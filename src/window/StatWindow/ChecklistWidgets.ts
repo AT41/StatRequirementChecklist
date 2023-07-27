@@ -145,7 +145,7 @@ export class ChecklistWidgets {
                 continue;
             }
             if (widgetNames[widget.name??""]) {
-                console.log(widget.name);
+                //console.log(widget.name);
                 windowWidget.isVisible = true;
                 (windowWidget as LabelWidget).text = (windowWidget as LabelWidget).text.replace(/: *$/, ": " + widgetNames[widget.name??""]);
                 windowWidget.y = this.Y_START + yInc;
