@@ -27,10 +27,29 @@ export class Logic {
         if (!type) {
             return rideRequirement;
         }
-        return context.formatString(
-            type,
-            parseInt(rideRequirement.match(/\d+/)?.[0] ?? ''),
-        );
+        let measurement = parseInt(rideRequirement.match(/\d+/)?.[0] ?? '');
+        if (type !== FormatStringType.VELOCITY) {
+            const unitOfMeasure = context
+                .formatString(type, measurement)
+                .match(/[^0-9\s]+/)?.[0];
+            return this.formatStringVelocity(measurement, unitOfMeasure ?? '');
+        }
+        return context.formatString(type, measurement);
+    }
+    private static formatStringVelocity(
+        measurementInMetric: number,
+        unitOfMeasure: string,
+    ) {
+        let measurement = measurementInMetric;
+        // GH Issue #1: formatString() expects measurement to be mph
+        // But the formatter takes an integer, so precision is lost.
+        // We manually do our conversions based on the unit of measure returned
+        switch (unitOfMeasure) {
+            case 'mph':
+                measurement = Math.round(measurementInMetric * 0.621371);
+                break;
+        }
+        return `${measurement} ${unitOfMeasure}`;
     }
     //Check Lay-down coaster, multi dimensional coaster
 }
