@@ -28,10 +28,10 @@ export class Logic {
             return rideRequirement;
         }
         let measurement = parseInt(rideRequirement.match(/\d+/)?.[0] ?? '');
-        if (type !== FormatStringType.VELOCITY) {
+        if (type === FormatStringType.VELOCITY) {
             const unitOfMeasure = context
                 .formatString(type, measurement)
-                .match(/[^0-9\s]+/)?.[0];
+                .match(/[^0-9\s]+$/)?.[0];
             return this.formatStringVelocity(measurement, unitOfMeasure ?? '');
         }
         return context.formatString(type, measurement);
